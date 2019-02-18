@@ -66,7 +66,21 @@ WHERE winner = 'PETER GRÜNBERG'
 
 -- 12 Apostrophe
 SELECT * FROM nobel
-WHERE winner = 'EUGENE O\'NEILL'
+WHERE winner = 'EUGENE O\'NEILL\'
 ;
 
 -- 13 Knights of the realm
+SELECT winner, yr, subject FROM nobel
+WHERE winner LIKE 'Sir %'
+ORDER BY yr DESC
+;
+
+-- 14 Chemistry and Physics last
+SELECT winner, subject
+  FROM nobel
+ WHERE yr=1984
+ ORDER BY subject IN ('Physics','Chemistry'),subject,winner
+
+
+--  Quiz
+-- 1
