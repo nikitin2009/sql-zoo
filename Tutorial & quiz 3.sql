@@ -66,7 +66,7 @@ WHERE winner = 'PETER GRÜNBERG'
 
 -- 12 Apostrophe
 SELECT * FROM nobel
-WHERE winner = 'EUGENE O\'NEILL'
+WHERE winner = 'EUGENE O''NEILL'
 ;
 
 -- 13 Knights of the realm
