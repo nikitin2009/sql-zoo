@@ -26,12 +26,12 @@ SELECT name, population FROM world
   WHERE population >
      (SELECT population FROM world
       WHERE name='Canada')
-    AND population < 
+    AND population <
      (SELECT population FROM world
       WHERE name='Poland')
 
 -- 5 Percentages of Germany
-SELECT name, 
+SELECT name,
 CONCAT(ROUND((population/(SELECT population FROM world WHERE name='Germany'))*100), '%')
 FROM world
 WHERE continent='Europe'
@@ -43,3 +43,24 @@ SELECT name
                            FROM world
                           WHERE continent='Europe'
                             AND gdp>0)
+
+-- 7 Largest in each continent
+SELECT continent, name, area FROM world AS x
+  WHERE area >= ALL
+                               (SELECT area FROM world AS y
+                               WHERE y.continent=x.continent
+                               AND area>0)
+;
+-- 8 First country of each continent (alphabetically)
+SELECT DISTINCT continent, name FROM world AS x
+WHERE name <= ALL (SELECT name FROM world AS y
+                  WHERE x.continent = y.continent)
+;
+
+-- 9 Difficult Questions That Utilize Techniques Not Covered In Prior Sections
+SELECT name, continent, population FROM world AS x
+WHERE name = ALL (SELECT name FROM world as y
+                                           WHERE y.continent <= ALL (SELECT continent FROM world AS z
+                                                                                            WHERE z.population <= 25000000)
+                                           AND x.name = y.name)
+; -- Needs more work
