@@ -94,13 +94,53 @@ HAVING
    AS t)
 ;
 
-
 -- 12
-SELECT new.title, new.ord FROM
-(SELECT movie.title AS t, actor.name, casting.ord AS o
-  FROM movie
+SELECT DISTINCT new.title, actor.name FROM actor
+JOIN casting
+ON actor.id = casting.actorid
+JOIN
+(SELECT movie.id, title FROM movie
   JOIN casting
-     ON movie.id = casting.movieid
-  JOIN actor
-     ON casting.actorid = actor.id AND actor.name = 'Julie Andrews') AS new
-WHERE new.ord=1
+      ON movie.id = casting.movieid
+   JOIN actor
+      ON casting.actorid = actor.id
+   WHERE actor.name = 'Julie Andrews'
+ ) AS new
+ON casting.movieid = new.id
+WHERE casting.ord = 1
+;
+
+-- 13
+SELECT actor.name
+FROM actor
+JOIN casting
+ON actor.id = casting.actorid
+WHERE casting.ord = 1
+GROUP BY actor.name
+HAVING COUNT(casting.ord) >= 30
+;
+
+-- 14
+SELECT movie.title, COUNT(casting.actorid) FROM movie
+JOIN casting
+ON movie.id = casting.movieid
+WHERE movie.yr = 1978
+GROUP BY movie.title
+ORDER BY COUNT(casting.actorid) DESC, movie.title
+;
+
+-- 15
+SELECT DISTINCT actor.name FROM actor
+JOIN casting
+ON actor.id = casting.actorid
+JOIN
+(SELECT movie.id, title FROM movie
+  JOIN casting
+      ON movie.id = casting.movieid
+   JOIN actor
+      ON casting.actorid = actor.id
+   WHERE actor.name = 'Art Garfunkel'
+ ) AS new
+ON casting.movieid = new.id
+WHERE actor.name != 'Art Garfunkel'
+;
