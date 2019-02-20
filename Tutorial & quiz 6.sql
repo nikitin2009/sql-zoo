@@ -49,4 +49,38 @@ SELECT goal.player
   WHERE game.stadium = 'National Stadium, Warsaw'
 ;
 
--- 8 
+-- 8
+SELECT DISTINCT goal.player
+  FROM goal
+  JOIN game
+  ON goal.matchid = game.id AND goal.teamid  != 'GER'
+
+   WHERE  game.team1 = 'GER'
+   OR game.team2 = 'GER'
+;
+
+-- 9
+SELECT eteam.teamname, COUNT(goal.matchid)
+  FROM eteam
+  JOIN goal ON
+  eteam.id = goal.teamid
+  group BY eteam.teamname
+;
+
+-- 10
+SELECT game.stadium, COUNT(goal.matchid)
+  FROM game
+  JOIN goal ON
+  game.id = goal.matchid
+  group BY game.stadium
+;
+
+-- 11
+SELECT game.id, game.mdate, COUNT(goal.matchid)
+
+  FROM game
+  JOIN goal ON goal.matchid = game.id
+  WHERE (team1 = 'POL' OR team2 = 'POL')
+
+GROUP BY game.id, game.mdate
+;
