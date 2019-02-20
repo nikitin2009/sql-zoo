@@ -89,18 +89,21 @@ GROUP BY game.id, game.mdate
 SELECT game.id, game.mdate, COUNT(goal.matchid)
 
   FROM game
-  JOIN goal 
+  JOIN goal
   ON goal.matchid = game.id AND goal.teamid = 'GER'
   WHERE (team1 = 'GER' OR team2 = 'GER')
 
 GROUP BY game.id, game.mdate
 
 -- 13
-SELECT mdate,
-  team1,
-  SUM(CASE WHEN teamid=team1 THEN 1 ELSE 0 END) AS score1,
+SELECT mdate,  team1,
+    SUM(CASE WHEN teamid=team1 THEN 1 ELSE 0 END) AS score1,
   team2,
-  SUM(CASE WHEN teamid=team2 THEN 1 ELSE 0 END) AS score2
-  FROM game JOIN goal ON matchid = id
-GROUP BY mdate,matchid,team1,team2
-ORDER BY mdate, matchid, team1, team2, teamid -- Needs working
+    SUM(CASE WHEN teamid=team2 THEN 1 ELSE 0 END) AS score2
+  FROM game
+  LEFT JOIN goal
+  ON matchid = id
+
+  GROUP BY matchid,team1,team2, mdate
+  ORDER BY mdate, matchid, team1, team2
+  ;
