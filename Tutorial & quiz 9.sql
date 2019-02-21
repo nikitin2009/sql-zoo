@@ -72,3 +72,62 @@ FROM route a JOIN route b ON
 WHERE stopa.name='Craiglockhart'
 
 -- 10
+
+SELECT
+  craiglist.num,
+  craiglist.company,
+  craiglist.name,
+  lochlist.num,
+  lochlist.company
+FROM
+
+  (SELECT
+    route.num,
+    route.company,
+    stops.name 
+  FROM stops
+    JOIN route
+    ON stops.id = route.stop
+    JOIN
+      (SELECT
+        route.num,
+        route.company,
+        stops.id,
+        stops.name
+      FROM stops
+        JOIN route
+        ON stops.id = route.stop
+      WHERE stops.name = 'Craiglockhart'
+  )
+  AS craig
+    ON route.num = craig.num AND route.company = craig.company
+  ORDER BY num
+)
+AS craiglist
+
+JOIN
+
+  (SELECT
+    route.num,
+    route.company,
+    stops.name
+  FROM stops
+  JOIN route
+    ON stops.id = route.stop
+  JOIN (
+    SELECT
+      route.num,
+      route.company,
+      stops.id,
+      stops.name
+    FROM stops
+    JOIN route
+      ON stops.id = route.stop
+  WHERE stops.name = 'Lochend'
+  )
+  AS loch
+    ON route.num = loch.num AND route.company = loch.company
+)
+AS lochlist
+
+ON craiglist.name = lochlist.name
