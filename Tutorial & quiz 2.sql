@@ -30,6 +30,7 @@ WHERE area > 3000000 OR population > 250000000
 -- 8 One or the other (but not both)
 SELECT name, population, area FROM world
 WHERE area > 3000000 XOR population > 250000000
+<<<<<<< HEAD
 
 
 -- 9 Rounding
@@ -105,3 +106,5 @@ Brazil
 Colombia
 
 
+=======
+>>>>>>> parent of 0fd0aac... Remove files that were erroneously merged from development branch
